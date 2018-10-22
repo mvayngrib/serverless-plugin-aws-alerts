@@ -20,7 +20,7 @@ const createWidget = (config) => {
     'AWS/Lambda',
     'Duration',
     'FunctionName',
-    `${config.service}-${config.stage}-${f.name}`,
+    '${' + f.logicalId + '}',
     {
       stat: 'Average',
       period: 2592000,

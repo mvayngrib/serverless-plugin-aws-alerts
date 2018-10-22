@@ -21,7 +21,7 @@ const createWidget = (config) => {
     'AWS/Lambda',
     'Invocations',
     'FunctionName',
-    `${config.service}-${config.stage}-${f.name}`,
+    '${' + f.logicalId + '}',
     {
       stat: 'Sum',
       period: 900,

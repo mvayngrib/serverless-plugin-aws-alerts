@@ -8,6 +8,8 @@ const defaultDefinitions = require('./defaults/definitions');
 
 const dashboards = require('./dashboards')
 
+const REF_STACK_NAME = { Ref: 'AWS::StackName' }
+
 class AlertsPlugin {
   constructor(serverless, options) {
     this.serverless = serverless;
@@ -91,7 +93,7 @@ class AlertsPlugin {
     }
 
     const namespace = definition.pattern ?
-      this.awsProvider.naming.getStackName() :
+      REF_STACK_NAME :
       definition.namespace;
 
     const metricName = definition.pattern ?
@@ -188,8 +190,8 @@ class AlertsPlugin {
     const logMetricCFRefOK = `${logMetricCFRefBase}OK`;
 
     const cfLogName = this.providerNaming.getLogGroupLogicalId(functionName);
-    const metricNamespace = this.providerNaming.getStackName();
-    const logGroupName = this.providerNaming.getLogGroupName(functionObj.name);
+    const metricNamespace = REF_STACK_NAME;
+    const logGroupName = this.providerNaming.getLogGroupTemplateName(functionObj.name);
     const metricName = this.naming.getPatternMetricName(alarm.metric, normalizedFunctionName);
 
     return {
@@ -270,7 +272,10 @@ class AlertsPlugin {
 
     const functions = this.serverless.service
                           .getAllFunctions()
-                          .map(functionName => ({ name: functionName }));
+                          .map(functionName => ({
+                            name: functionName,
+                            logicalId: this.providerNaming.getLambdaLogicalId(functionName),
+                          }));
 
     const cf = _.chain(dashboardTemplates)
       .uniq()
@@ -280,15 +285,18 @@ class AlertsPlugin {
         const cfResource = d === 'default'
           ? 'AlertsDashboard'
           : `AlertsDashboard${d}`;
+
         const dashboardName = d === 'default'
-          ? `${service.service}-${stage}-${region}`
-          : `${service.service}-${stage}-${region}-${d}`;
+          ? REF_STACK_NAME
+          : { 'Fn::Sub': '${AWS::StackName}-' + d }
 
         acc[cfResource] = {
           Type: 'AWS::CloudWatch::Dashboard',
           Properties: {
             DashboardName: dashboardName,
-            DashboardBody: JSON.stringify(dashboard),
+            DashboardBody: {
+              'Fn::Sub': JSON.stringify(dashboard)
+            },
           }
         };
         return acc;

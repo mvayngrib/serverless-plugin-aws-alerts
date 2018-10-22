@@ -1,7 +1,7 @@
 'use strict';
 
 const createWidget = (config) => {
-  const apiName = `${config.stage}-${config.service}`;
+  const apiName = '${AWS::StackName}';
 
   const widget = {
     type: 'metric',

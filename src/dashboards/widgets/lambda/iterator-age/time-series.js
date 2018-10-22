@@ -23,7 +23,7 @@ const createWidget = (config) => {
         'AWS/Lambda',
         'IteratorAge',
         'FunctionName',
-        `${config.service}-${config.stage}-${f.name}`,
+        '${' + f.logicalId + '}',
         {
           stat: 'p50',
           period: 900,
@@ -34,7 +34,7 @@ const createWidget = (config) => {
         'AWS/Lambda',
         'IteratorAge',
         'FunctionName',
-        `${config.service}-${config.stage}-${f.name}`,
+        '${' + f.logicalId + '}',
         {
           stat: 'p90',
           period: 900,
