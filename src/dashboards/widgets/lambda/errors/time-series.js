@@ -12,7 +12,7 @@ const createWidget = (config) => {
       view: 'timeSeries',
       stacked: false,
       metrics: [ ],
-      region: config.region,
+      region: '${AWS::Region}',
       period: 300
     }
   };
@@ -25,7 +25,7 @@ const createWidget = (config) => {
     {
       stat: 'Sum',
       period: 900,
-      region: config.region,
+      region: '${AWS::Region}',
       label: f.name
     }
   ]));

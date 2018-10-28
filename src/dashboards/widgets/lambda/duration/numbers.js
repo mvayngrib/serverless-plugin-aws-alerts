@@ -11,7 +11,7 @@ const createWidget = (config) => {
       title: config.title,
       view: 'singleValue',
       metrics: [ ],
-      region: config.region,
+      region: '${AWS::Region}',
       period: 300
     }
   };
@@ -24,7 +24,7 @@ const createWidget = (config) => {
     {
       stat: 'Average',
       period: 2592000,
-      region: config.region,
+      region: '${AWS::Region}',
       label: f.name
     }
   ]));

@@ -12,7 +12,7 @@ const createWidget = (config) => {
       view: 'timeSeries',
       stacked: false,
       metrics: [ ],
-      region: config.region,
+      region: '${AWS::Region}',
       period: 300
     }
   };

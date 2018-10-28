@@ -13,10 +13,10 @@ const createWidget = (config) => {
       title: config.title,
       view: 'singleValue',
       metrics: [
-        [ 'AWS/ApiGateway', 'IntegrationLatency', 'ApiName', apiName, { stat: 'Average', period: 2592000, region: config.region, label: 'IntegrationLatency' } ],
-        [ 'AWS/ApiGateway', 'Latency', 'ApiName', apiName, { stat: 'Average', period: 2592000, region: config.region, label: 'Latency' } ]
+        [ 'AWS/ApiGateway', 'IntegrationLatency', 'ApiName', apiName, { stat: 'Average', period: 2592000, region: '${AWS::Region}', label: 'IntegrationLatency' } ],
+        [ 'AWS/ApiGateway', 'Latency', 'ApiName', apiName, { stat: 'Average', period: 2592000, region: '${AWS::Region}', label: 'Latency' } ]
       ],
-      region: config.region,
+      region: '${AWS::Region}',
       period: 300
     }
   };
